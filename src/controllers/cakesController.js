@@ -10,6 +10,7 @@ export const postCake = async(req, res) => {
 
         await cakeRepository.addCake(name, price, image, description);
         res.status(201).send('Add cake done!')
+        
     } catch (error) {
         console.log('error trc post cake: ', error);
         res.sendStatus(500)
