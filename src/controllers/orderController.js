@@ -23,7 +23,7 @@ export const getAllOrders = async (req, res) => {
   try {
     const orders = await orderRepository.getOrders();
     console.log(orders.rows.map(_mapOrderObject));
-
+    if (orders.rowCount === 0 ) return res.status(404).send('no orders yet ;-; ')
 
     res.send(orders.rows.map(_mapOrderObject)).status(200);
   } catch (error) {
