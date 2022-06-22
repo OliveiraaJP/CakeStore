@@ -15,10 +15,22 @@ async function addOrder(clientId, cakeId, quantity) {
   );
 }
 
+async function getOrders() {
+  return db.query({text: `SELECT cl."name" as "clientName", cl.id as "clientId", cl.address as "clientAddress",
+  cl.phone as "clientPhone",
+  ca.id as "cakeId",ca.name as "cakeName",ca.price as "cakePrice",
+  ca.description as "cakeDescription", ca.image as "cakeImage",
+  o.id as "orderId", o.quantity,o."createdAt" 
+  FROM orders o  
+  JOIN cakes ca ON ca.id = o."cakeId"
+  JOIN clients cl ON cl.id = o."clientId"`, rowMode: "array"});
+}
+
 const orderRepository = {
   verifyCake,
   verifyClient,
   addOrder,
+  getOrders
 };
 
 export default orderRepository;
