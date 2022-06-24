@@ -28,7 +28,7 @@ async function getOrders(whereClause, responseDate) {
   FROM orders o  
   JOIN cakes ca ON ca.id = o."cakeId"
   JOIN clients cl ON cl.id = o."clientId"
-  ${whereClause}`, rowMode: "array"}, [responseDate]);
+  ${whereClause}`, rowMode: "array"}, responseDate);
 }
 
 async function getOneOrder(responseId){
