@@ -7,8 +7,16 @@ async function addClient(name, address, phone) {
   );
 }
 
+async function getAllClientOrders(responseId) {
+  return db.query({text: `SELECT o.id as "orderId", o.quantity, o."createdAt", ca."name" as "cakeName", ca.price 
+  FROM orders o
+  JOIN cakes ca ON ca.id = o."cakeId"
+  WHERE o."clientId" = $1`, rowMode:"array"}, [responseId]);
+}
+
 const clientsRepository = {
-    addClient
+  addClient,
+  getAllClientOrders
 };
 
 export default clientsRepository;
