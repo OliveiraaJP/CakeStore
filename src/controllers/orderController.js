@@ -1,4 +1,5 @@
 import orderRepository from "../repositories/orderRepository.js";
+import dayjs from "dayjs";
 
 export const postOrder = async (req, res) => {
   const { clientId, cakeId, quantity } = req.body;
@@ -48,8 +49,10 @@ function _mapOrderObject(row) {
     createdAt
   ] = row;
 
-  const price = cakePrice*1
-  const totalPrice = parseInt(quantity) * price.toFixed(2)
+  const newDate = dayjs(createdAt).format('YYYY-MM-DD HH:mm')
+  const priceC = cakePrice*1
+  const cakePriceShow = (cakePrice*1).toFixed(2)
+  const totalPrice = parseInt(quantity) * priceC.toFixed(2)
   return {
     client:{
         id: clientId,
@@ -60,12 +63,12 @@ function _mapOrderObject(row) {
     cake:{
         id: cakeId,
         name: cakeName,
-        price: cakePrice,
+        price: cakePriceShow,
         description: cakeDescription,
         image: cakeImage
     },
     orderId,
-    createdAt,
+    createdAt: newDate,
     quantity,
     totalPrice: totalPrice.toFixed(2)
   }
