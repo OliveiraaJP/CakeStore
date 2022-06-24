@@ -19,7 +19,7 @@ async function addOrder(clientId, cakeId, quantity) {
   );
 }
 
-async function getOrders() {
+async function getOrders(whereClause, responseDate) {
   return db.query({text: `SELECT cl."name" as "clientName", cl.id as "clientId", cl.address as "clientAddress",
   cl.phone as "clientPhone",
   ca.id as "cakeId",ca.name as "cakeName",ca.price as "cakePrice",
@@ -27,7 +27,8 @@ async function getOrders() {
   o.id as "orderId", o.quantity,o."createdAt" 
   FROM orders o  
   JOIN cakes ca ON ca.id = o."cakeId"
-  JOIN clients cl ON cl.id = o."clientId"`, rowMode: "array"});
+  JOIN clients cl ON cl.id = o."clientId"
+  ${whereClause}`, rowMode: "array"}, [responseDate]);
 }
 
 async function getOneOrder(responseId){

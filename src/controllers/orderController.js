@@ -21,8 +21,17 @@ export const postOrder = async (req, res) => {
 };
 
 export const getAllOrders = async (req, res) => {
+  const { date } = req.query
   try {
-    const orders = await orderRepository.getOrders();
+    const params = []
+    let whereClause = ''
+
+    if(date){
+      params.push(`${date}%`)
+      whereClause += `WHERE o."createdAt" ILIKE $${params.length}`; //case insensitive
+    }
+
+    const orders = await orderRepository.getOrders(whereClause, date);
     console.log(orders.rows.map(_mapOrderObject));
     if (orders.rowCount === 0 ) return res.status(404).send('no orders yet ;-; ')
 
