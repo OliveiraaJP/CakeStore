@@ -33,6 +33,22 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
+export const getSingleOrder = async (req, res) => {
+  const {id} = req.params
+
+  try {
+    const hasOrder = await orderRepository.verifyOrder(id);
+    if(hasOrder.rowCount ===0) return res.send('No order with this Id').status(404);
+    const singleOrder = await orderRepository.getOneOrder(id)
+    console.log(singleOrder.rows.map(_mapOrderObject));
+    res.send(singleOrder.rows.map(_mapOrderObject)).status(200)
+
+  } catch (error) {
+    console.log('error single order trc: ', error);
+    res.sendStatus(500);
+  }
+}
+
 function _mapOrderObject(row) {
   const [
     clientName,
